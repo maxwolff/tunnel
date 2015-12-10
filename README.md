@@ -6,5 +6,6 @@ Light up the tunnel by colliding with the spheres that come your way. The rotati
 The drum track is loaded into an Stk object through ofSoundstream, and then analyzed for onset with Aubio.
 
 
-![alt tag](https://github.com/maxwolff/tunnel/master/screen1.png)
+![alt tag](https://github.com/maxwolff/tunnel/blob/master/screen1.png)
+![alt tag](https://github.com/maxwolff/tunnel/blob/master/screen2.png)
 
