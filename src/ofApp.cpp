@@ -104,13 +104,14 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels){
         }
         
     }
+    /*
     if(ofGetElapsedTimeMillis() - levelStart > 40000) {
         ofSleepMillis(1000); 
         tunnel = 2;
         ofLog()<< ofToString(tunnel)<< "here it is" <<endl;
         levelStart = ofGetElapsedTimeMillis();
     }
-    
+    */
     // compute onset detection
     
     // compute pitch detection
@@ -136,26 +137,19 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    
+
     if (tunnel == 0 ) {
         ofBackground(0, 0, 0);
         if (gotOnset) ofBackground(collisions * 3, collisions * 3, collisions* 3);
         instructions.drawString("Tunnel" , ofGetWindowWidth()/2, ofGetWindowHeight()/2);
         instructions.drawString("by Max Wolff" , ofGetWindowWidth()/2, ofGetWindowHeight()/2 + 50);
     } if (tunnel == 1){
-        ofSetColor(0,0,255);
+        
         float thesh = onsetThreshold;
       //  instructions.drawString(ofToString(thesh), 5, 30);
         //cursor
         ofFill();
-        ofPushMatrix();
-        ofPushStyle();
-            ofCircle(mouseX, mouseY,cursorSize);
-            ofTranslate(0,0,0);
-            ofNoFill();
-            ofRect(ofGetWindowWidth()/2 - 250, ofGetWindowHeight()/2 - 250, 500,500);
-        ofPopStyle();
-        ofPopMatrix();
+
             if (gotOnset == 1){
                 onsetTemp = 1;
             }
@@ -181,8 +175,10 @@ void ofApp::draw(){
         // if not empty, there is a square that is the cursor's plane
         
         collisions = tunnel1.draw(mouseX, mouseY, cursorSize);
-        volume = log(collisions)/4;
-            
+        volume = collisions/70.0;
+        ofLog()<<ofToString( volume )<< "volume "<<endl;
+        ofLog()<<ofToString( collisions )<< "collisions "<<endl;
+        
             ofPushMatrix();
                 ofTranslate(0,0);
                 if (onset.received()) {
@@ -206,65 +202,16 @@ void ofApp::draw(){
        // cam.end();
         
     }
-    if ( tunnel ==2){
-        ofSetColor(0,0,255);
-        float thesh = onsetThreshold;
-        //  instructions.drawString(ofToString(thesh), 5, 30);
-        //cursor
-        ofFill();
-        ofPushMatrix();
-        ofPushStyle();
-        ofCircle(mouseX, mouseY,cursorSize);
-        ofTranslate(0,0,0);
-        ofNoFill();
-        ofRect(ofGetWindowWidth()/2 - 250, ofGetWindowHeight()/2 - 250, 500,500);
-        ofPopStyle();
-        ofPopMatrix();
-        if (gotOnset == 1){
-            onsetTemp = 1;
-        }
-        
-        time = ofGetElapsedTimeMillis();
-        int temp = time / milPerBeat;
-        
-        if( temp > tunnelNum){
-            if (tunnel == 1){
-                tunnel1.add(onsetTemp);
-            }
-            if (tunnel ==2){
-                tunnel2.add(onsetTemp);
-            }
-            
-            onsetTemp = 0;
-            tunnelNum = temp;
-            sampleCounter ++;
-        }
-        
-        
-        //collisions
-        // if not empty, there is a square that is the cursor's plane
-        
-        collisions = tunnel1.draw(mouseX, mouseY, cursorSize);
-        if(collisions/40.0 < 1) volume = collisions/40.0;
-        
-        ofPushMatrix();
-        ofTranslate(0,0);
-        if (onset.received()) {
-            gotOnset = 1;
-        } else {
-            gotOnset = 0;
-        }
-        //            onsetNovelty = onset.novelty;
-        //            onsetThresholdedNovelty = onset.thresholdedNovelty;
-        //
-        // update pitch info
-        pitchConfidence = pitch.pitchConfidence;
-        if (pitch.latestPitch) midiPitch = pitch.latestPitch;
-  
-  
-        
-    }
+    ofPushMatrix();
+    ofTranslate(0,0,0);
+    ofSetColor(150,150,80);
+    ofFill();
+    ofCircle(mouseX, mouseY,cursorSize);
     
+    ofNoFill();
+    ofRect(ofGetWindowWidth()/2 - 250, ofGetWindowHeight()/2 - 250, 500,500);
+    
+    ofPopMatrix();
 }
 
 //--------------------------------------------------------------
@@ -284,6 +231,7 @@ void ofApp::keyPressed(int key){
         levelStart = ofGetElapsedTimeMillis();
         sound1.play();
        // sound.setVolume(volume);
+        
     }
     if ( key == '3') {
         tunnel = 2;
@@ -291,12 +239,6 @@ void ofApp::keyPressed(int key){
         levelStart = ofGetElapsedTimeMillis();
         sound1.play();
     }
-    if ( key == '4') {
-        tunnel = 1;
-        float tempyTemp = .6;
-        sound1.setVolume(tempyTemp);
-    }
-    
 }
 
 //--------------------------------------------------------------

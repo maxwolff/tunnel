@@ -14,10 +14,10 @@ Tunnel::Tunnel(){
     speed = 3;
     recSize = 40;
     rotationInit = 90;
-    sphereRadius = 5;
+    sphereRadius = 3;
     sphere.setRadius(sphereRadius);
     collisionCounter.loadFont("verdana.ttf", 20);
-    rotateZ = 1;
+    rotateZ = 0;
 }
 
 void Tunnel::add(int deform){
@@ -59,6 +59,13 @@ int Tunnel::draw(int mouseX, int mouseY, int cursorSize){
         }
         ofRotateY(rotation);
       //  ofRotateZ(20);
+//        ofPushMatrix();
+//            ofTranslate(ofGetWindowWidth(), ofGetWindowHeight());
+//            ofRotateZ(positions[i][6]);
+//            positions[i][6] =  positions[i][6] + 5;
+//            ofLog()<< ofToString(positions[i][6]);
+//      //  ofPopMatrix();
+//        
         ofEnableAlphaBlending();
         int opacity;
         if ( zCoord < 300){
@@ -68,12 +75,13 @@ int Tunnel::draw(int mouseX, int mouseY, int cursorSize){
             ofSetColor(200,100,100, 256 + opacity);
             if (collision) ofSetColor(0,0,0);
             ofRect(0,0, 0, recSize,recSize);
+  
             if ( !positions[i][0]){
                 positions[i][0] = ofRandomuf();
                 positions[i][1] = ofRandomuf();
             }
             ofPushMatrix();
-                if (collision) ofSetColor(250,0,0);
+                if (collision) ofSetColor(205,153,255);
                 ofTranslate(recSize * positions[i][0], recSize * positions[i][1], 0);
                 sphere.drawWireframe();
             ofPopMatrix();
